@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>携帯回線管理システム</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>携帯回線管理システム</h1>
+        
+        <div class="form-toggle-container">
+            <button id="toggleForm" class="btn-toggle">入力フォームを表示/非表示</button>
+        </div>
+
+        <div class="form-section hidden" id="formSection">
+            <h2>新規登録</h2>
+            <form id="mobileLineForm">
+                <div class="form-group">
+                    <label for="phoneNumber">電話番号* <small>（必須）</small></label>
+                    <input type="tel" id="phoneNumber" required pattern="[0-9\-]*" placeholder="例：090-1234-5678">
+                </div>
+
+                <div class="form-group">
+                    <label for="contractDate">契約日* <small>（必須）</small></label>
+                    <input type="date" id="contractDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="carrier">キャリア</label>
+                    <div class="select-container">
+                        <p class="select-help">1. 既存の選択肢から選ぶ:</p>
+                        <select id="carrier">
+                            <option value="">選択してください</option>
+                        </select>
+                        
+                        <p class="select-help">2. または新しい項目を追加:</p>
+                        <input type="text" id="newCarrier" placeholder="新しいキャリア名を入力">
+                        <button type="button" class="add-option-btn" data-target="carrier">追加する</button>
+                        
+                        <button type="button" class="delete-option-btn" data-target="carrier">選択肢を管理する</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="contractPeriod">維持期間（月）</label>
+                    <input type="number" id="contractPeriod" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="cancellationDate">解約可能日</label>
+                    <input type="text" id="cancellationDate" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="owner">名義</label>
+                    <div class="select-container">
+                        <p class="select-help">1. 既存の選択肢から選ぶ:</p>
+                        <select id="owner">
+                            <option value="">選択してください</option>
+                        </select>
+                        
+                        <p class="select-help">2. または新しい項目を追加:</p>
+                        <input type="text" id="newOwner" placeholder="新しい名義を入力">
+                        <button type="button" class="add-option-btn" data-target="owner">追加する</button>
+                        
+                        <button type="button" class="delete-option-btn" data-target="owner">選択肢を管理する</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="user">利用者</label>
+                    <div class="select-container">
+                        <p class="select-help">1. 既存の選択肢から選ぶ:</p>
+                        <select id="user">
+                            <option value="">選択してください</option>
+                        </select>
+                        
+                        <p class="select-help">2. または新しい項目を追加:</p>
+                        <input type="text" id="newUser" placeholder="新しい利用者を入力">
+                        <button type="button" class="add-option-btn" data-target="user">追加する</button>
+                        
+                        <button type="button" class="delete-option-btn" data-target="user">選択肢を管理する</button>
+                    </div>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label for="hasBullet">弾</label>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="hasBullet">
+                        <span class="checkbox-label">弾として利用する</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">備考</label>
+                    <textarea id="notes"></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary">登録</button>
+            </form>
+        </div>
+
+        <div class="table-section">
+            <h2>登録一覧</h2>
+            <div class="search-filter-container">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="電話番号、名義、利用者などで検索...">
+                </div>
+                <div class="filter-box">
+                    <select id="filterCarrier">
+                        <option value="">キャリア: すべて</option>
+                    </select>
+                    <select id="filterOwner">
+                        <option value="">名義: すべて</option>
+                    </select>
+                    <select id="filterUser">
+                        <option value="">利用者: すべて</option>
+                    </select>
+                    <select id="filterBullet">
+                        <option value="">すべて</option>
+                        <option value="true">弾</option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-container">
+                <table id="mobileLineTable">
+                    <thead>
+                        <tr>
+                            <th data-sort="phoneNumber" class="sortable">電話番号 <span class="sort-icon">&#x25B2;</span></th>
+                            <th data-sort="contractDate" class="sortable">契約日 <span class="sort-icon">&#x25B2;</span></th>
+                            <th data-sort="carrier" class="sortable">キャリア <span class="sort-icon">&#x25B2;</span></th>
+                            <th data-sort="contractPeriod" class="sortable">維持期間 <span class="sort-icon">&#x25B2;</span></th>
+                            <th data-sort="cancellationDate" class="sortable">解約可能日 <span class="sort-icon">&#x25B2;</span></th>
+                            <th data-sort="owner" class="sortable">名義 <span class="sort-icon">&#x25B2;</span></th>
+                            <th data-sort="user" class="sortable">利用者 <span class="sort-icon">&#x25B2;</span></th>
+                            <th data-sort="hasBullet" class="sortable center-align">弾 <span class="sort-icon">&#x25B2;</span></th>
+                            <th data-sort="notes" class="sortable">備考 <span class="sort-icon">&#x25B2;</span></th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
